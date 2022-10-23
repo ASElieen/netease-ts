@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let s = "ab#c";
+      let t = "ad#c";
+
+      const handleStr = (str)=>{
+        let arr = []
+        for(let i =0;i<str.length;i++){
+            str[i]==='#'?arr.pop():arr.push(str[i])
+        }
+        arr = arr.join('')
+        return arr
+      }
+      
+      const backSpaceCompare = (s, t) => {
+         return handleStr(s) == handleStr(t)
+      };
+
+      console.log(backSpaceCompare(s,t))
+    //   backSpaceCompare("ab#c","ad#c")
+    </script>
+  </body>
+</html>
