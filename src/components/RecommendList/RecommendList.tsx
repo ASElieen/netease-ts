@@ -3,7 +3,7 @@ import { getCount } from '../../api/utils'
 import {List,ListItem,ListWrapper} from './liststyle'
 import { BsFillPlayFill } from "react-icons/bs";
 
-type RecommendData = {
+export type RecommendData = {
     id: number;
     picUrl: string;
     playCount: number;

@@ -1,7 +1,7 @@
 import { getBannerRequest } from "../../api/request";
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit'
 
-export interface BannerState {
+interface BannerState {
   bannerImg: Array<{ imageUrl: string }>;
   isLoading: boolean;
   loading: "pending" | "fulfilled" | "rejected";

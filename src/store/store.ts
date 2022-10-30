@@ -1,9 +1,11 @@
 import {configureStore} from '@reduxjs/toolkit'
 import bannerReducer from './slices/bannerSlice'
+import recommendReducer from './slices/recommendListSlice'
 
 const store = configureStore({
     reducer:{
-        banner:bannerReducer
+        banner:bannerReducer,
+        recommend:recommendReducer
     }
 })
 
