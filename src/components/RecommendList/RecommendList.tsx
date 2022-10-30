@@ -3,24 +3,24 @@ import { getCount } from '../../api/utils'
 import {List,ListItem,ListWrapper} from './liststyle'
 import { BsFillPlayFill } from "react-icons/bs";
 
-type recommendData = {
+type RecommendData = {
     id: number;
     picUrl: string;
     playCount: number;
     name: string;
 };
 
-interface recommendProps {
-  recommendList: Array<recommendData>;
+interface RecommendProps {
+  recommendList: Array<RecommendData>;
 }
 
 
-const RecommendList:React.FC<recommendProps> = (props) => {
+const RecommendList:React.FC<RecommendProps> = (props) => {
   return (
     <ListWrapper>
       <h1 className="title"> 推荐歌单 </h1>
       <List>
-        {props.recommendList.map((item:recommendData, index: number) => {
+        {props.recommendList.map((item:RecommendData, index: number) => {
           return (
             <ListItem key={item.id + index}>
               <div className="img_wrapper">
