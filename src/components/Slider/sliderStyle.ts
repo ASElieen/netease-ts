@@ -10,7 +10,7 @@ export const SliderContainer = styled.div`
   background: white;
   .before {
     position: absolute;
-    top: 0;
+    top: -10px;
     height: 60%;
     width: 100%;
     background: ${commonStyle["theme-color"]};

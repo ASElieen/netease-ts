@@ -4,7 +4,7 @@ import commonStyle from "../../assets/globalStyle";
 export const Top = styled.div`
 display: flex;
 flex-direction: row;
-justify-content: space-around;
+justify-content: space-between;
 padding: 5px 10px;
 background: ${commonStyle['theme-color']};
 &>span{
@@ -23,6 +23,7 @@ display: flex;
 flex-direction: row;
 justify-content: space-around;
 background: ${commonStyle['theme-color']};
+transform: translateY(-5px);
 a{
     flex: 1;
     padding: 2px 0;

@@ -20,17 +20,19 @@ const Slider:React.FC<BannerList> = (props) => {
     ));
   return (
     <SliderContainer>
-        <div className='slider-container'>
-            <Swiper
-            autoplay
-            loop
-            className='slider-nav'
-            indicatorProps={{color:'white'}}>
-                {item}
-            </Swiper>
-        </div>
+      <div className="before"></div>
+      <div className="slider-container">
+        <Swiper
+          autoplay
+          loop
+          className="slider-nav"
+          indicatorProps={{ color: "white" }}
+        >
+          {item}
+        </Swiper>
+      </div>
     </SliderContainer>
-  )
+  );
 }
 
-export default Slider
+export default React.memo(Slider);
