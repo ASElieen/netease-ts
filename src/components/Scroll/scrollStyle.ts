@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import commonStyle from "../../assets/globalStyle";
 
 export const ScrollContainer = styled.div`
   width: 100%;

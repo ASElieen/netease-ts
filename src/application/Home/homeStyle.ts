@@ -18,7 +18,7 @@ background: ${commonStyle['theme-color']};
 `
 
 export const Tab = styled.div`
-height: 44px;
+height: 46px;
 display: flex;
 flex-direction: row;
 justify-content: space-around;

@@ -1,12 +1,12 @@
-// import {configureStore} from '@reduxjs/toolkit'
+import {configureStore} from '@reduxjs/toolkit'
+import bannerReducer from './slices/bannerSlice'
 
-// const store = configureStore({
-//     reducer:{}
-// })
+const store = configureStore({
+    reducer:{
+        banner:bannerReducer
+    }
+})
 
-
-// export type RootState = ReturnType<typeof store.getState()>
-
-// export default store
-
-export const test = ()=>{}
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch;
+export default store
