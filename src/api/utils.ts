@@ -11,7 +11,7 @@ export const getCount = (count:number) => {
 };
 
 //Singer组件处理map数据
-export const handleCategory = (categoryName:string,category:Map<string,{type:number,area:number}>)=>{
-  const {type,area} = category.get(categoryName) || {type:0,area:0}
+export const handleMapCategory = (categoryName:string,category:Map<string,{type:string,area:number}>)=>{
+  const {type,area} = category.get(categoryName) || {type:'0',area:0}
   return {type,area}
 }

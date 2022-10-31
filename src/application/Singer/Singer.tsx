@@ -16,9 +16,9 @@ import {
   requestMoreHotSingers,
   addPageCount,
   clearPageCount,
-  changePullUpLoading
+  changePullUpLoading,
 } from "../../store/slices/singerListSlice";
-import { handleCategory } from "../../api/utils";
+import { handleMapCategory } from "../../api/utils";
 import { mapCategory } from "../../api/categoryData";
 
 const Singer = () => {
@@ -31,11 +31,31 @@ const Singer = () => {
     dispatch(getHotSingerList());
   }, [dispatch]);
 
+  //处理顶部歌手分类
   const handleCategory = (value: string) => {
     setCategory(value);
+    sessionStorage.setItem("category", value);
+    const category = handleMapCategory(
+      value,
+      mapCategory
+    );
+    dispatch(getSingerListWithCategory({
+      categoryName:category.type as string,
+      alpha:alpha,
+      area:category.area
+    }))
   };
+
+  //处理顶部字母分类
   const handleAlpha = (value: string) => {
     setAlpha(value);
+    sessionStorage.setItem('alpha',value)
+    const Mapcategory = handleMapCategory(value,mapCategory)
+    dispatch(getSingerListWithCategory({
+      categoryName:Mapcategory.type,
+      alpha:value,
+      area:Mapcategory.area
+    }))
   };
 
   //--------------------变量处理TSX--------------------------
