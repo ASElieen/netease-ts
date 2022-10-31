@@ -1,2 +1,7 @@
 # netease-ts
-网抑云TS版
+
+## 分支说明
+
+### Recommend：推荐页部分
+
+### Optimization：性能优化部分
