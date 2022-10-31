@@ -3,7 +3,7 @@ import BScroll from "better-scroll";
 import { ScrollContainer } from "./scrollStyle";
 
 interface ScrollProps {
-  direction?: "vertical" | "horizontal"; //滚动方向
+  direction?: "vertical" | "horizental"; //滚动方向
   click?: boolean; //是否支持点击
   refresh?: boolean; //是否刷新
   onScroll?: Function; //滑动触发回调函数
@@ -42,7 +42,7 @@ const Scroll = forwardRef((props: ScrollProps, ref) => {
   useEffect(() => {
     if (scrollContainerRef.current) {
       const scroll = new BScroll(scrollContainerRef.current, {
-        scrollX: direction === "horizontal",
+        scrollX: direction === "horizental",
         scrollY: direction === "vertical",
         probeType: 3,
         click,
