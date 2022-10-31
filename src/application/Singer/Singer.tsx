@@ -1,14 +1,23 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import HorizenItem from '../../BaseUI/HorizenItem/HorizenItem';
 import { NavContainer,ListContainer } from '../../BaseUI/HorizenItem/horizenStyle';
 import { categoryTypes, alphaTypes } from "../../api/mock";
 import Scroll from '../../components/Scroll/Scroll';
+import WaveLoading from '../../components/Loading/WaveLoading/WaveLoading';
 import RenderSingerList from '../../components/RenderSingerList/RenderSingerList';
-import { singerList } from '../../api/mock';
+// import { singerList } from '../../api/mock';
+import { useAppDispatch,useAppSelector } from '../../api/customHooks';
+import { getHotSingerList } from '../../store/slices/singerListSlice';
 
 const Singer = () => {
   const [category,setCategory] = useState('')
   const [alpha,setAlpha] = useState('')
+  const dispatch = useAppDispatch()
+  const {isLoading,singerList} = useAppSelector((state)=>state.hotSinger)
+
+  useEffect(()=>{
+    dispatch(getHotSingerList())
+  },[dispatch])
 
   const handleCategody = (value:string)=>{
     setCategory(value)
@@ -16,7 +25,9 @@ const Singer = () => {
   const handleAlpha = (value:string)=>{
     setAlpha(value)
   }
-  return (
+
+  //--------------------变量处理TSX--------------------------
+  const scrollTitle = (
     <>
       <NavContainer>
         <HorizenItem
@@ -32,14 +43,31 @@ const Singer = () => {
           handleClick={(value) => handleAlpha(value)}
         ></HorizenItem>
       </NavContainer>
-
-      <ListContainer>
-        <Scroll>
-          <RenderSingerList singerList={singerList}/>
-        </Scroll>
-      </ListContainer>
     </>
   );
+  //-------------------------------------------------------
+
+  if(isLoading){
+    return (
+      <>
+        {scrollTitle}
+        <ListContainer>
+          <WaveLoading margin='100px'/>
+        </ListContainer>
+      </>
+    );
+  }else{
+    return (
+      <>
+        {scrollTitle}
+        <ListContainer>
+          <Scroll>
+            <RenderSingerList singerList={singerList} />
+          </Scroll>
+        </ListContainer>
+      </>
+    );
+  }
 }
 
 export default React.memo(Singer);

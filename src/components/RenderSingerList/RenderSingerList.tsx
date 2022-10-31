@@ -1,7 +1,7 @@
 import React from 'react'
 import {List,ListItem} from './renderStyle'
 
-type Singers = {
+export type Singers = {
     picUrl:string,
     name:string,
     accountId:number
