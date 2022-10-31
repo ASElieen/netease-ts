@@ -1,3 +1,4 @@
+
 export const getCount = (count:number) => {
   if (count < 0) return;
   if (count < 10000) {
@@ -8,3 +9,9 @@ export const getCount = (count:number) => {
     return Math.floor(count / 10000000) / 10 + "亿";
   }
 };
+
+//Singer组件处理map数据
+export const handleCategory = (categoryName:string,category:Map<string,{type:number,area:number}>)=>{
+  const {type,area} = category.get(categoryName) || {type:0,area:0}
+  return {type,area}
+}

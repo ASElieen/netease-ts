@@ -1,30 +1,42 @@
-import React,{useEffect, useState} from 'react'
-import HorizenItem from '../../BaseUI/HorizenItem/HorizenItem';
-import { NavContainer,ListContainer } from '../../BaseUI/HorizenItem/horizenStyle';
+import React, { useEffect, useState } from "react";
+import HorizenItem from "../../BaseUI/HorizenItem/HorizenItem";
+import {
+  NavContainer,
+  ListContainer,
+} from "../../BaseUI/HorizenItem/horizenStyle";
 import { categoryTypes, alphaTypes } from "../../api/mock";
-import Scroll from '../../components/Scroll/Scroll';
-import WaveLoading from '../../components/Loading/WaveLoading/WaveLoading';
-import RenderSingerList from '../../components/RenderSingerList/RenderSingerList';
-// import { singerList } from '../../api/mock';
-import { useAppDispatch,useAppSelector } from '../../api/customHooks';
-import { getHotSingerList } from '../../store/slices/singerListSlice';
+import Scroll from "../../components/Scroll/Scroll";
+import WaveLoading from "../../components/Loading/WaveLoading/WaveLoading";
+import RenderSingerList from "../../components/RenderSingerList/RenderSingerList";
+import { useAppDispatch, useAppSelector } from "../../api/customHooks";
+import {
+  getHotSingerList,
+  getSingerListWithCategory,
+  refreshMoreSingersWithCategory,
+  requestMoreHotSingers,
+  addPageCount,
+  clearPageCount,
+  changePullUpLoading
+} from "../../store/slices/singerListSlice";
+import { handleCategory } from "../../api/utils";
+import { mapCategory } from "../../api/categoryData";
 
 const Singer = () => {
-  const [category,setCategory] = useState('')
-  const [alpha,setAlpha] = useState('')
-  const dispatch = useAppDispatch()
-  const {isLoading,singerList} = useAppSelector((state)=>state.hotSinger)
+  const [category, setCategory] = useState("");
+  const [alpha, setAlpha] = useState("");
+  const dispatch = useAppDispatch();
+  const { isLoading, singerList } = useAppSelector((state) => state.hotSinger);
 
-  useEffect(()=>{
-    dispatch(getHotSingerList())
-  },[dispatch])
+  useEffect(() => {
+    dispatch(getHotSingerList());
+  }, [dispatch]);
 
-  const handleCategody = (value:string)=>{
-    setCategory(value)
-  }
-  const handleAlpha = (value:string)=>{
-    setAlpha(value)
-  }
+  const handleCategory = (value: string) => {
+    setCategory(value);
+  };
+  const handleAlpha = (value: string) => {
+    setAlpha(value);
+  };
 
   //--------------------变量处理TSX--------------------------
   const scrollTitle = (
@@ -34,7 +46,7 @@ const Singer = () => {
           list={categoryTypes}
           title={"分类 (热门):"}
           oldVal={category}
-          handleClick={(value) => handleCategody(value)}
+          handleClick={(value) => handleCategory(value)}
         ></HorizenItem>
         <HorizenItem
           list={alphaTypes}
@@ -47,16 +59,16 @@ const Singer = () => {
   );
   //-------------------------------------------------------
 
-  if(isLoading){
+  if (isLoading) {
     return (
       <>
         {scrollTitle}
         <ListContainer>
-          <WaveLoading margin='100px'/>
+          <WaveLoading margin="100px" />
         </ListContainer>
       </>
     );
-  }else{
+  } else {
     return (
       <>
         {scrollTitle}
@@ -68,6 +80,6 @@ const Singer = () => {
       </>
     );
   }
-}
+};
 
 export default React.memo(Singer);
