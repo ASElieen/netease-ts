@@ -1,6 +1,14 @@
-import React, { forwardRef, useState, useRef,useEffect,useImperativeHandle } from "react";
+import React, {
+  forwardRef,
+  useState,
+  useRef,
+  useEffect,
+  useImperativeHandle,
+} from "react";
+import { useDebounce } from "../../api/customHooks";
 import BScroll from "better-scroll";
-import { ScrollContainer } from "./scrollStyle";
+import { ScrollContainer, PullDownLoading, PullUpLoading } from "./scrollStyle";
+import Spinner from '../Loading/Spinner/Spinner'
 
 interface ScrollProps {
   direction?: "vertical" | "horizental"; //滚动方向
@@ -14,13 +22,13 @@ interface ScrollProps {
   bounceTop?: boolean; //是否支持向上吸顶
   bounceBottom?: boolean; //是否支持向下吸顶
   children: React.ReactNode;
-  className?:string
+  className?: string;
 }
 
 type PosType = {
-    x:number,
-    y:number
-}
+  x: number;
+  y: number;
+};
 
 const Scroll = forwardRef((props: ScrollProps, ref) => {
   const [bscroll, setBscroll] = useState<BScroll | null>(null);
@@ -37,6 +45,9 @@ const Scroll = forwardRef((props: ScrollProps, ref) => {
   } = props;
 
   const { pullUp, pullDown, onScroll } = props;
+
+  const pullUpDebounce = useDebounce(pullUp,300)
+  const pullDownDebounce = useDebounce(pullDown,300)
 
   //实例化bs
   useEffect(() => {
@@ -89,34 +100,50 @@ const Scroll = forwardRef((props: ScrollProps, ref) => {
 
   //手指上拉判断
   useEffect(() => {
-    if (!bscroll || !pullUp) return;
+    if (!bscroll || !pullUpDebounce) return;
     bscroll.on("scrollEnd", () => {
       //判断是否已经触底
       if (bscroll.y <= bscroll.maxScrollY + 100) {
-        pullUp();
+        pullUpDebounce();
       }
     });
     return () => {
       bscroll.off("scrollEnd");
     };
-  }, [pullUp, bscroll]);
+  }, [pullUp,pullUpDebounce, bscroll]);
 
   //手指下滑判断
   useEffect(() => {
-    if (!bscroll || !pullDown) return;
+    if (!bscroll || !pullDownDebounce) return;
     //判断下拉的动作
     bscroll.on("touchEnd", (pos: PosType) => {
       if (pos.y > 50) {
-        pullDown();
+        pullDownDebounce();
       }
     });
     return () => {
       bscroll.off("touchEnd");
     };
-  });
+  },[pullDown,pullDownDebounce,bscroll]);
+
+  //上拉下拉的loading动画显示
+  const PullUpdisplayStyle = pullUpLoading
+    ? { display: "" }
+    : { display: "none" };
+  const PullDowndisplayStyle = pullDownLoading
+    ? { display: "" }
+    : { display: "none" };
 
   return (
-    <ScrollContainer ref={scrollContainerRef}>{props.children}</ScrollContainer>
+    <ScrollContainer ref={scrollContainerRef}>
+      {props.children}
+      <PullUpLoading style={PullUpdisplayStyle}>
+        <Spinner />
+      </PullUpLoading>
+      <PullDownLoading style={PullDowndisplayStyle}>
+        <Spinner />
+      </PullDownLoading>
+    </ScrollContainer>
   );
 });
 
