@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../api/customHooks";
+import {Outlet} from 'react-router-dom'
 import Slider from "../../components/Slider/Slider";
 import RecommendList from "../../components/RecommendList/RecommendList";
 import Scroll from "../../components/Scroll/Scroll";
@@ -33,6 +34,7 @@ export const Recommend = () => {
           <RecommendList recommendList={recommendList} />
         </div>
       </Scroll>
+      <Outlet/>
     </Content>
   );
 };

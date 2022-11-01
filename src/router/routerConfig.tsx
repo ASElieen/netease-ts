@@ -14,6 +14,7 @@ const Home = SuspenseComponent(lazy(()=>import('../application/Home/Home')))
 const Recommend = SuspenseComponent(lazy(()=>import('../application/Recommend/Recommend')))
 const Singer = SuspenseComponent(lazy(()=>import('../application/Singer/Singer')))
 const Rank = SuspenseComponent(lazy(()=>import('../application/Rank/Rank')))
+const Album = SuspenseComponent(lazy(()=>import('../application/Album/Album')))
 
 export const RouterConfig = ()=>{
   return (
@@ -21,7 +22,9 @@ export const RouterConfig = ()=>{
       <Route path="/" element={<Home />}>
         <Route path="/" element={<Navigate to="/recommend" />} />
         <Route path="/rank" element={<Rank />} />
-        <Route path="/recommend" element={<Recommend />}></Route>
+        <Route path="/recommend" element={<Recommend />}>
+          <Route path='/recommend/:id' element={<Album/>}/>
+        </Route>
 
         <Route path="/singer" element={<Singer />}></Route>
       </Route>
