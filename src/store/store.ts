@@ -2,12 +2,14 @@ import {configureStore} from '@reduxjs/toolkit'
 import bannerReducer from './slices/bannerSlice'
 import recommendReducer from './slices/recommendListSlice'
 import hotSingerReducer from './slices/singerListSlice'
+import rankReducer from './slices/rankSlice'
 
 const store = configureStore({
     reducer:{
         banner:bannerReducer,
         recommend:recommendReducer,
-        hotSinger:hotSingerReducer
+        hotSinger:hotSingerReducer,
+        rank:rankReducer
     }
 })
 
