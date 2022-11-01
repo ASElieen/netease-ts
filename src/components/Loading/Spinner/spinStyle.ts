@@ -1,41 +1,31 @@
-import styled,{keyframes} from "styled-components";
+import styled, { keyframes } from "styled-components";
+import commonStyle from "../../../assets/globalStyle";
 
-const rotate = keyframes`
- 100% {
-    transform: rotate(360deg);
-  }
-`
-
-const dash = keyframes`
-0% {
-    stroke-dasharray: 1, 150;
-    stroke-dashoffset: 0;
-  }
-  50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -35;
-  }
-  100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -124;
-  }
+const spinner = keyframes`
+0% {transform:rotate(0deg)}
+100% {transform:rotate(360deg)}
 `;
 
 export const SVGContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .spinner {
-    color: red;
-    z-index: 2;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -25px 0 0 -25px;
-    width: 50px;
-    height: 50px;
-    animation: ${rotate} 2s linear infinite;
-    .path {
-      stroke: hsl(210, 70, 75);
-      stroke-linecap: round;
-      animation: ${dash} 1.5s ease-in-out infinite;
-    }
+    width: 1.5rem;
+    height: 1.5rem;
+    border-top-color: ${commonStyle["theme-color"]};
+    border-left-color: ${commonStyle["theme-color"]};
+
+    animation: ${spinner} 0.5s linear infinite;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
   }
 `;

@@ -17,6 +17,7 @@ import {
   addPageCount,
   clearPageCount,
   changePullUpLoading,
+  changePullDownLoading,
 } from "../../store/slices/singerListSlice";
 import { handleMapCategory } from "../../api/utils";
 import { mapCategory } from "../../api/categoryData";
@@ -25,7 +26,9 @@ const Singer = () => {
   const [category, setCategory] = useState("");
   const [alpha, setAlpha] = useState("");
   const dispatch = useAppDispatch();
-  const { isLoading, singerList } = useAppSelector((state) => state.hotSinger);
+  const { isLoading, singerList, pullUpLoading,pullDownLoading } = useAppSelector(
+    (state) => state.hotSinger
+  );
 
   useEffect(() => {
     dispatch(getHotSingerList());
@@ -58,20 +61,62 @@ const Singer = () => {
     }))
   };
 
+  //手势上滑 底部刷新 请求更多数据
+  const handlePullUp = async ()=>{
+    dispatch(addPageCount(10))
+    dispatch(changePullUpLoading(true))
+    if (sessionStorage.getItem("alpha") || sessionStorage.getItem("category")) {
+      const category = handleMapCategory(
+        sessionStorage.getItem("category") as string,
+        mapCategory
+      );
+      await dispatch(
+        refreshMoreSingersWithCategory({
+          categoryName: category.type || '-1',
+          alpha: sessionStorage.getItem("alpha") || '',
+          area: category.area || -1,
+        })
+      );
+    } else {
+      await dispatch(requestMoreHotSingers());
+    }
+    dispatch(changePullUpLoading(false))
+  }
+
+  //手势下拉 顶部刷新 重新加载
+  const handlePullDown = async ()=>{
+    dispatch(clearPageCount())
+    dispatch(changePullDownLoading(true));
+    if(sessionStorage.getItem('alpha') || sessionStorage.getItem('category')){
+      const { type, area } = handleMapCategory(
+        sessionStorage.getItem("category") as string,
+        mapCategory
+      )
+      await dispatch(getSingerListWithCategory({
+        categoryName:type || '-1',
+        alpha:sessionStorage.getItem('alpha') || '',
+        area:area || -1
+      }))
+    }else{
+      await dispatch(getHotSingerList())
+    }
+    dispatch(changePullDownLoading(false))
+  }
+
   //--------------------变量处理TSX--------------------------
-  const scrollTitle = (
+  const ScrollTitle = (
     <>
       <NavContainer>
         <HorizenItem
           list={categoryTypes}
           title={"分类 (热门):"}
-          oldVal={category}
+          oldVal={sessionStorage.getItem("category") || category}
           handleClick={(value) => handleCategory(value)}
         ></HorizenItem>
         <HorizenItem
           list={alphaTypes}
           title={"首字母:"}
-          oldVal={alpha}
+          oldVal={sessionStorage.getItem("alpha") || alpha}
           handleClick={(value) => handleAlpha(value)}
         ></HorizenItem>
       </NavContainer>
@@ -82,7 +127,7 @@ const Singer = () => {
   if (isLoading) {
     return (
       <>
-        {scrollTitle}
+        {ScrollTitle}
         <ListContainer>
           <WaveLoading margin="100px" />
         </ListContainer>
@@ -91,9 +136,14 @@ const Singer = () => {
   } else {
     return (
       <>
-        {scrollTitle}
+        {ScrollTitle}
         <ListContainer>
-          <Scroll>
+          <Scroll
+            pullUpLoading={pullUpLoading}
+            pullDownLoading={pullDownLoading}
+            pullUp={handlePullUp}
+            pullDown={handlePullDown}
+          >
             <RenderSingerList singerList={singerList} />
           </Scroll>
         </ListContainer>

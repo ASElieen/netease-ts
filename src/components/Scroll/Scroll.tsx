@@ -1,6 +1,13 @@
-import React, { forwardRef, useState, useRef,useEffect,useImperativeHandle } from "react";
+import React, {
+  forwardRef,
+  useState,
+  useRef,
+  useEffect,
+  useImperativeHandle,
+} from "react";
 import BScroll from "better-scroll";
-import { ScrollContainer } from "./scrollStyle";
+import { ScrollContainer, PullDownLoading, PullUpLoading } from "./scrollStyle";
+import Spinner from '../Loading/Spinner/Spinner'
 
 interface ScrollProps {
   direction?: "vertical" | "horizental"; //滚动方向
@@ -14,13 +21,13 @@ interface ScrollProps {
   bounceTop?: boolean; //是否支持向上吸顶
   bounceBottom?: boolean; //是否支持向下吸顶
   children: React.ReactNode;
-  className?:string
+  className?: string;
 }
 
 type PosType = {
-    x:number,
-    y:number
-}
+  x: number;
+  y: number;
+};
 
 const Scroll = forwardRef((props: ScrollProps, ref) => {
   const [bscroll, setBscroll] = useState<BScroll | null>(null);
@@ -115,8 +122,24 @@ const Scroll = forwardRef((props: ScrollProps, ref) => {
     };
   });
 
+  //上拉下拉的loading动画显示
+  const PullUpdisplayStyle = pullUpLoading
+    ? { display: "" }
+    : { display: "none" };
+  const PullDowndisplayStyle = pullDownLoading
+    ? { display: "" }
+    : { display: "none" };
+
   return (
-    <ScrollContainer ref={scrollContainerRef}>{props.children}</ScrollContainer>
+    <ScrollContainer ref={scrollContainerRef}>
+      {props.children}
+      <PullUpLoading style={PullUpdisplayStyle}>
+        <Spinner />
+      </PullUpLoading>
+      <PullDownLoading style={PullDowndisplayStyle}>
+        <Spinner />
+      </PullDownLoading>
+    </ScrollContainer>
   );
 });
 
