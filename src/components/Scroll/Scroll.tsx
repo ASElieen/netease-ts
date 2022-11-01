@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useImperativeHandle,
 } from "react";
-import { useDebounce } from "../../api/customHooks";
+import { debounce } from "../../api/customHooks";
 import BScroll from "better-scroll";
 import { ScrollContainer, PullDownLoading, PullUpLoading } from "./scrollStyle";
 import Spinner from '../Loading/Spinner/Spinner'
@@ -46,8 +46,9 @@ const Scroll = forwardRef((props: ScrollProps, ref) => {
 
   const { pullUp, pullDown, onScroll } = props;
 
-  const pullUpDebounce = useDebounce(pullUp,300)
-  const pullDownDebounce = useDebounce(pullDown,300)
+  const pullUpDebounce = debounce(pullUp as Function,2000)
+  
+  const pullDownDebounce = debounce(pullDown as Function,2000)
 
   //实例化bs
   useEffect(() => {

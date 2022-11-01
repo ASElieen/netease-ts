@@ -1,4 +1,4 @@
-
+import { ParamProps } from "../store/slices/rankSlice";
 export const getCount = (count:number) => {
   if (count < 0) return;
   if (count < 10000) {
@@ -14,4 +14,13 @@ export const getCount = (count:number) => {
 export const handleMapCategory = (categoryName:string,category:Map<string,{type:string,area:number}>)=>{
   const {type,area} = category.get(categoryName) || {type:'0',area:0}
   return {type,area}
+}
+
+//处理榜单分类
+export const filterIndex = (rankList:Array<ParamProps>)=>{
+  for(let i =0;i<rankList.length-1;i++){
+    if (rankList[i].tracks.length && !rankList[i + 1].tracks.length) {
+      return i + 1;
+    }
+  }
 }
