@@ -59,7 +59,7 @@ const Singer = () => {
   };
 
   //--------------------变量处理TSX--------------------------
-  const scrollTitle = (
+  const ScrollTitle = (
     <>
       <NavContainer>
         <HorizenItem
@@ -82,7 +82,7 @@ const Singer = () => {
   if (isLoading) {
     return (
       <>
-        {scrollTitle}
+        {ScrollTitle}
         <ListContainer>
           <WaveLoading margin="100px" />
         </ListContainer>
@@ -91,7 +91,7 @@ const Singer = () => {
   } else {
     return (
       <>
-        {scrollTitle}
+        {ScrollTitle}
         <ListContainer>
           <Scroll>
             <RenderSingerList singerList={singerList} />
