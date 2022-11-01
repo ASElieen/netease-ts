@@ -91,9 +91,6 @@ const hotSingerSlice = createSlice({
     changePullUpLoading: (state, action) => {
       state.pullUpLoading = action.payload;
     },
-    changePullDownLoading:(state,action)=>{
-      state.pullDownLoading = action.payload
-    }
   },
   extraReducers: (builder) => {
     //初次加载歌手页获取热门列表
@@ -164,7 +161,6 @@ export const {
   addPageCount,
   clearPageCount,
   changePullUpLoading,
-  changePullDownLoading,
 } = hotSingerSlice.actions;
 export default hotSingerSlice.reducer
 

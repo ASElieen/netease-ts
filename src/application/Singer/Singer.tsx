@@ -17,10 +17,10 @@ import {
   addPageCount,
   clearPageCount,
   changePullUpLoading,
-  changePullDownLoading,
 } from "../../store/slices/singerListSlice";
 import { handleMapCategory } from "../../api/utils";
 import { mapCategory } from "../../api/categoryData";
+import { forceCheck } from "react-lazyload";
 
 const Singer = () => {
   const [category, setCategory] = useState("");
@@ -84,23 +84,21 @@ const Singer = () => {
   }
 
   //手势下拉 顶部刷新 重新加载
-  const handlePullDown = async ()=>{
+  const handlePullDown = ()=>{
     dispatch(clearPageCount())
-    dispatch(changePullDownLoading(true));
     if(sessionStorage.getItem('alpha') || sessionStorage.getItem('category')){
       const { type, area } = handleMapCategory(
         sessionStorage.getItem("category") as string,
         mapCategory
       )
-      await dispatch(getSingerListWithCategory({
+      dispatch(getSingerListWithCategory({
         categoryName:type || '-1',
         alpha:sessionStorage.getItem('alpha') || '',
         area:area || -1
       }))
     }else{
-      await dispatch(getHotSingerList())
+      dispatch(getHotSingerList())
     }
-    dispatch(changePullDownLoading(false))
   }
 
   //--------------------变量处理TSX--------------------------
@@ -143,6 +141,7 @@ const Singer = () => {
             pullDownLoading={pullDownLoading}
             pullUp={handlePullUp}
             pullDown={handlePullDown}
+            onScroll={forceCheck}
           >
             <RenderSingerList singerList={singerList} />
           </Scroll>
