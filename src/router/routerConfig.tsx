@@ -1,6 +1,6 @@
 import {Routes,Route,Navigate} from 'react-router-dom'
 import React, { lazy, LazyExoticComponent,Suspense } from 'react'
-import WaveLoading from '../components/Loading/WaveLoading/WaveLoading'
+import Spinner from '../components/Loading/Spinner/Spinner'
 
 const SuspenseComponent = (Component:LazyExoticComponent<any>)=>(props:any)=>{
   return (
@@ -25,7 +25,7 @@ export const RouterConfig = ()=>{
 
         <Route path="/singer" element={<Singer />}></Route>
       </Route>
-      <Route path='/test' element={<WaveLoading/>}/>
+      <Route path='/test' element={<Spinner/>}/>
     </Routes>
   );
 }
