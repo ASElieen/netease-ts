@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container,TopDesc,Menu,SongList,SongItem } from "./albumStyle";
 import { CSSTransition } from "react-transition-group";
 import AlbumHeader from "../../components/AlbumHeader/AlbumHeader";
 import { currentAlbum } from "../../api/mock";
-import Scroll from "../../components/Scroll/Scroll";
+import Scroll,{PosType} from "../../components/Scroll/Scroll";
 import { BsFillPlayFill } from "react-icons/bs";
 import { BiComment, BiLike } from "react-icons/bi";
 import { MdCollections } from "react-icons/md";
 import { IoIosMore } from "react-icons/io";
 import { getName,getCount } from "../../api/utils";
+import commonStyle from "../../assets/globalStyle";
 
 export type AlbumTracksProps = {
   name: "string";
@@ -31,11 +32,53 @@ interface AlbumProps {
 const Album:React.FC<AlbumProps> = (props) => {
   const navigate = useNavigate();
   const [showStatus, setShowStatus] = useState(true);
+  const [title, setTitle] = useState("歌单");
+  const [isMarquee,setIsMarquee] = useState(false)
+  const headerEl = useRef<HTMLDivElement>(null);
 
   //开启退出动画
   const handleBack = ()=>{
     setShowStatus(false)
   }
+
+  const HEADER_HEIGHT = 45
+
+  const handleScroll = (pos:PosType)=>{
+    let minScrollY = -HEADER_HEIGHT
+    let percent = Math.abs(pos.y / minScrollY);
+    const headerDOM = headerEl.current
+    const backButton = Array.from(
+      (headerEl.current as HTMLDivElement).children
+    )[0];
+
+    //当顶部高度开始变化时
+    if(pos.y<minScrollY){
+      (headerDOM as HTMLDivElement).style.backgroundColor = commonStyle["theme-color"];
+      (headerDOM as HTMLDivElement).style.opacity = Math.min(
+        1,
+        (percent - 1) / 2
+      ).toString();
+
+      //对返回也做一下渐变处理 用来盖住滚动标题
+      (backButton as HTMLDivElement).style.backgroundColor =
+        commonStyle["theme-color"];
+      (backButton as HTMLDivElement).style.opacity = Math.min(
+        1,
+        (percent - 1) / 2
+      ).toString();
+      setTitle(currentAlbum.name)
+      setIsMarquee(true)
+    }else{
+      (headerDOM as HTMLDivElement).style.backgroundColor = "";
+      (headerDOM as HTMLDivElement).style.opacity = '1';
+
+      (backButton as HTMLDivElement).style.backgroundColor = "";
+      (backButton as HTMLDivElement).style.opacity = "1";
+      setTitle("歌单");
+      setIsMarquee(false);
+    }
+  }
+
   return (
     <CSSTransition
       in={showStatus}
@@ -46,8 +89,8 @@ const Album:React.FC<AlbumProps> = (props) => {
       onExited={() => navigate(-1)}
     >
       <Container>
-        <AlbumHeader title={"返回"} handleClick={handleBack} />
-        <Scroll bounceTop={false}>
+        <AlbumHeader title={title} handleClick={handleBack} isMarquee={isMarquee} ref={headerEl as any}/>
+        <Scroll bounceTop={false} onScroll={handleScroll}>
           <div>
             <TopDesc background={currentAlbum.coverImgUrl}>
               <div className="background">

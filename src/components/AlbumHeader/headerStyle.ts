@@ -3,7 +3,7 @@ import commonStyle from "../../assets/globalStyle";
 
 export const HeaderContainer = styled.div`
   position: fixed;
-  padding: 5px 10px;
+  padding: 5px 10px 5px 0;
   padding-top: 0;
   height: 40px;
   width: 100%;
@@ -23,8 +23,26 @@ export const HeaderContainer = styled.div`
       width: 20px;
     }
   }
+  .marquee {
+    width: 80%;
+    height: 35%;
+    position: relative;
+    animation: marquee 10s linear infinite;
+    @keyframes marquee {
+      from {
+        left: 100%;
+      }
+      to {
+        left: -100%;
+      }
+    }
+    h1 {
+      font-size: ${commonStyle["font-size-ll"]};
+      font-weight: 700;
+    }
+  }
   > h1 {
-    font-size: ${commonStyle["font-size-l"]};
+    font-size: ${commonStyle["font-size-ll"]};
     font-weight: 700;
   }
 `;
