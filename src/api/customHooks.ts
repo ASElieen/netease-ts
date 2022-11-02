@@ -17,6 +17,7 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 // }
 
 export const debounce = (fn: Function, ms = 300) => {
+  if(!fn) return
   let timeoutId: ReturnType<typeof setTimeout>;
   return function (this: any, ...args: any[]) {
     clearTimeout(timeoutId);

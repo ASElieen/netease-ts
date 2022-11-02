@@ -1,5 +1,6 @@
 import React from "react";
 import { useAppSelector } from "../../api/customHooks";
+import {useNavigate} from 'react-router-dom'
 import WaveLoading from "../Loading/WaveLoading/WaveLoading";
 import { getCount } from "../../api/utils";
 import LazyLoad from "react-lazyload";
@@ -20,6 +21,13 @@ interface RecommendProps {
 
 const RecommendList: React.FC<RecommendProps> = (props) => {
   const {isLoading} = useAppSelector((state)=>state.recommend)
+  const navigate = useNavigate()
+
+  //路由跳转
+  const enterDetail = (id:number)=>{
+    navigate(`/recommend/${id}`)
+  }
+
   if(isLoading){
     return (
       <ListWrapper>
@@ -34,7 +42,7 @@ const RecommendList: React.FC<RecommendProps> = (props) => {
         <List>
           {props.recommendList.map((item: RecommendData) => {
             return (
-              <ListItem key={item.id + item.playCount}>
+              <ListItem key={item.id + item.playCount} onClick={()=>enterDetail(item.id)}>
                 <div className="img_wrapper">
                   <div className="decorate"></div>
                   {/* 加此参数可以减小请求的图片资源大小 */}

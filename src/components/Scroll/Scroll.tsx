@@ -25,7 +25,7 @@ interface ScrollProps {
   className?: string;
 }
 
-type PosType = {
+export type PosType = {
   x: number;
   y: number;
 };
