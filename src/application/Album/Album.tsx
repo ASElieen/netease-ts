@@ -1,24 +1,25 @@
-import React, { useState,useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState,useRef,useEffect } from "react";
+import { useNavigate,useLocation } from "react-router-dom";
+import { useAppDispatch,useAppSelector } from "../../api/customHooks";
+import { getCurrentAlbum } from "../../store/slices/albumSlice";
 import { Container,TopDesc,Menu,SongList,SongItem } from "./albumStyle";
 import { CSSTransition } from "react-transition-group";
 import AlbumHeader from "../../components/AlbumHeader/AlbumHeader";
-import { currentAlbum } from "../../api/mock";
 import Scroll,{PosType} from "../../components/Scroll/Scroll";
 import { BsFillPlayFill } from "react-icons/bs";
 import { BiComment, BiLike } from "react-icons/bi";
 import { MdCollections } from "react-icons/md";
 import { IoIosMore } from "react-icons/io";
-import { getName,getCount } from "../../api/utils";
+import { getName,getCount,getUrlId } from "../../api/utils";
 import commonStyle from "../../assets/globalStyle";
 
-export type AlbumTracksProps = {
-  name: "string";
+export interface AlbumTracksProps {
+  name: string;
   ar: Array<{ name: string }>;
   al:{name:string}
 };
 
-interface AlbumProps {
+export interface AlbumProps {
   creator: {
     avatarUrl: string;
     nickname: string;
@@ -29,12 +30,22 @@ interface AlbumProps {
   tracks: Array<AlbumTracksProps>;
 }
 
-const Album:React.FC<AlbumProps> = (props) => {
+
+const Album:React.FC<AlbumProps> = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
+  const location = useLocation()
+  const {currentAlbum,isLoading} = useAppSelector((state)=>state.album)
   const [showStatus, setShowStatus] = useState(true);
   const [title, setTitle] = useState("歌单");
   const [isMarquee,setIsMarquee] = useState(false)
   const headerEl = useRef<HTMLDivElement>(null);
+
+  //数据层处理
+  const urlId = getUrlId(location.pathname)
+  useEffect(()=>{
+    dispatch(getCurrentAlbum(urlId))
+  },[dispatch,urlId])
 
   //开启退出动画
   const handleBack = ()=>{
