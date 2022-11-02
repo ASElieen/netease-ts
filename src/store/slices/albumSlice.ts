@@ -26,7 +26,6 @@ export const getCurrentAlbum = createAsyncThunk(
   async (id: string) => {
     try {
       const resp = await getAlbumDetailRequest(id);
-      console.log(resp);
       return (resp as any).playlist;
     } catch (error) {
       console.log(error + "请求歌单详情失败");
