@@ -5,7 +5,8 @@ export type ParamProps = {
   tracks: Array<{ first: string; second: string }>;
   coverImgId: number;
   coverImgUrl: string;
-  updateFrequency:string
+  updateFrequency:string;
+  id?:number
 };
 
 interface rankProps {
