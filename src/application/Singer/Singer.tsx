@@ -21,6 +21,7 @@ import {
 import { handleMapCategory } from "../../api/utils";
 import { mapCategory } from "../../api/categoryData";
 import { forceCheck } from "react-lazyload";
+import { Outlet } from "react-router-dom";
 
 const Singer = () => {
   const [category, setCategory] = useState("");
@@ -146,6 +147,7 @@ const Singer = () => {
             <RenderSingerList singerList={singerList} />
           </Scroll>
         </ListContainer>
+        <Outlet/>
       </>
     );
   }

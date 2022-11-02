@@ -11,13 +11,6 @@ const SuspenseComponent =
     );
   };
 
-<<<<<<< HEAD
-const Home = SuspenseComponent(lazy(()=>import('../application/Home/Home')))
-const Recommend = SuspenseComponent(lazy(()=>import('../application/Recommend/Recommend')))
-const Singer = SuspenseComponent(lazy(()=>import('../application/Singer/Singer')))
-const Rank = SuspenseComponent(lazy(()=>import('../application/Rank/Rank')))
-const Album = SuspenseComponent(lazy(()=>import('../application/Album/Album')))
-=======
 const Home = SuspenseComponent(lazy(() => import("../application/Home/Home")));
 const Recommend = SuspenseComponent(
   lazy(() => import("../application/Recommend/Recommend"))
@@ -29,27 +22,23 @@ const Rank = SuspenseComponent(lazy(() => import("../application/Rank/Rank")));
 const Album = SuspenseComponent(
   lazy(() => import("../application/Album/Album"))
 );
->>>>>>> RankList
+const SingerInfo = SuspenseComponent(lazy(()=>import('../application/SingerInfo/SingerInfo')))
 
 export const RouterConfig = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />}>
         <Route path="/" element={<Navigate to="/recommend" />} />
-<<<<<<< HEAD
-        <Route path="/rank" element={<Rank />} />
-        <Route path="/recommend" element={<Recommend />}>
-          <Route path='/recommend/:id' element={<Album/>}/>
-=======
         <Route path="/rank" element={<Rank />}>
           <Route path="/rank/:id" element={<Album />} />
         </Route>
         <Route path="/recommend" element={<Recommend />}>
           <Route path="/recommend/:id" element={<Album />} />
->>>>>>> RankList
         </Route>
 
-        <Route path="/singer" element={<Singer />}></Route>
+        <Route path="/singer" element={<Singer />}>
+          <Route path="/singer/:id" element={<SingerInfo/>}/>
+        </Route>
       </Route>
       <Route path="/test" element={<Spinner />} />
     </Routes>

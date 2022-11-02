@@ -5,8 +5,8 @@ import { MdArrowBackIosNew } from "react-icons/md";
 interface ParamProps {
   handleClick?: () => void;
   title?: string;
-  isMarquee: boolean;
-  ref:any,
+  isMarquee?: boolean;
+  ref?:any,
 }
 
 const AlbumHeader: React.FC<ParamProps> = React.forwardRef((props, ref) => {
