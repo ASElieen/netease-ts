@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import AlbumHeader from "../../components/AlbumHeader/AlbumHeader";
 import SongList from "../SongList/SongList";
-import Scroll from "../../components/Scroll/Scroll";
+import Scroll, { PosType } from "../../components/Scroll/Scroll";
 import {
   Container,
   CollectButton,
@@ -26,26 +26,88 @@ const SingerInfo = () => {
   const header = useRef<HTMLDivElement>(null);
   const layer = useRef<HTMLDivElement>(null);
 
+  //header初始高度
+  const HEADER_HEIGHT = 45;
   // 图片初始高度
   const initialHeight = useRef(0);
 
   // 往上偏移的尺寸，露出圆角
   const OFFSET = -5;
 
+  //将歌单置于图片下方
   useEffect(() => {
     let h;
     if (imageWrapper.current) h = imageWrapper.current.offsetHeight;
 
     if (songScrollWrapper.current)
-      songScrollWrapper.current.style.top = `${h as number - OFFSET}px`;
+      songScrollWrapper.current.style.top = `${(h as number) - OFFSET}px`;
 
-    if (initialHeight.current) initialHeight.current = h as number;
+    initialHeight.current = h as number;
 
-    if (layer.current) layer.current.style.top = `${(h as number) - OFFSET} px`;
+    if (layer.current) layer.current.style.top = `${(h as number) - OFFSET}px`;
 
     //useImperativeHandle让这里可以调用Scroll中的refresh
     if (songScroll.current) (songScroll.current as any).refresh();
-  },[]);
+  }, []);
+
+  //滚动逻辑
+  const handleScroll = useCallback((pos: PosType) => {
+    let height = initialHeight.current;
+    const newY = pos.y;
+    const imageDOM = imageWrapper.current;
+    const buttonDOM = collectButton.current;
+    const headerDOM = header.current;
+    const layerDOM = layer.current;
+    const minScrollY = -(height - OFFSET) + HEADER_HEIGHT;
+
+    // 指的是滑动距离占图片高度的百分比 组件渲染时已经将initialHeight渲染为图片高度
+    const percent = Math.abs(newY / height);
+    console.log(newY + "-" + minScrollY);
+    console.log(height);
+
+    //下拉
+    if (newY > 0) {
+      if (imageDOM) imageDOM.style["transform"] = `scale(${1 + percent})`;
+      if (buttonDOM)
+        buttonDOM.style["transform"] = `translate3d(0,${newY}px,0)`;
+      if (layerDOM) layerDOM.style.top = `${height - OFFSET + newY}px`;
+    } else if (newY >= minScrollY) {
+      //上滑 但是遮罩还没有超过header
+      if (layerDOM) {
+        layerDOM.style.top = `${height - OFFSET - Math.abs(newY)}px`;
+        // 这时候保证遮罩的层叠优先级比图片高，不至于被图片挡住
+        layerDOM.style.zIndex = "1";
+      }
+      if (imageDOM) {
+        imageDOM.style.paddingTop = "75%";
+        imageDOM.style.height = "0";
+        imageDOM.style.zIndex = "-1";
+      }
+      if (buttonDOM) {
+        // 按钮跟着移动且渐渐变透明
+        buttonDOM.style["transform"] = `translate3d(0, ${newY}px, 0)`;
+        buttonDOM.style["opacity"] = `${1 - percent * 2}`;
+      }
+    } else if (newY < minScrollY) {
+      //上滑 遮罩已经超过header
+      if (layerDOM) {
+        layerDOM.style.top = `${HEADER_HEIGHT - OFFSET}px`;
+        layerDOM.style.zIndex = "1";
+      }
+
+      if (headerDOM) {
+        // 防止溢出的歌单内容遮住 Header
+        headerDOM.style.zIndex = "100";
+      }
+
+      if (imageDOM) {
+        // 此时图片高度与 Header 一致
+        imageDOM.style.height = `${HEADER_HEIGHT}px`;
+        imageDOM.style.paddingTop = "0";
+        imageDOM.style.zIndex = "99";
+      }
+    }
+  },[])
 
   //开始加载退出动画
   const handleExit = useCallback(() => {
@@ -72,10 +134,10 @@ const SingerInfo = () => {
           <span className="text">收藏</span>
         </CollectButton>
 
-        {/* <BgLayer ref={layer} /> */}
+        <BgLayer ref={layer} />
 
         <SongListWrapper ref={songScrollWrapper}>
-          <Scroll ref={songScroll}>
+          <Scroll ref={songScroll} onScroll={handleScroll}>
             <SongList songs={artist.hotSongs} showCollect={false} />
           </Scroll>
         </SongListWrapper>
