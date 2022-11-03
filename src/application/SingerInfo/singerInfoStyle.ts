@@ -30,7 +30,7 @@ export const Container = styled.div<{ play: number }>`
   }
 `;
 
-export const ImgWrapper = styled.div<{ bgUrl: string }>`
+export const ImgWrapper = styled.div<{ bgUrl: string,ref:any }>`
   position: relative;
   width: 100%;
   height: 0;
@@ -49,7 +49,7 @@ export const ImgWrapper = styled.div<{ bgUrl: string }>`
   }
 `;
 
-export const CollectButton = styled.div`
+export const CollectButton = styled.div<{ref:any}>`
   position: absolute;
   left: 0;
   right: 0;
@@ -78,7 +78,7 @@ export const CollectButton = styled.div`
   }
 `;
 
-export const SongListWrapper = styled.div`
+export const SongListWrapper = styled.div<{ref:any}>`
   position: absolute;
   z-index: 50;
   top: 0;

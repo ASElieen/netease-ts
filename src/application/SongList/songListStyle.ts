@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import commonStyle from "../../assets/globalStyle";
 
-export const SongListComponent = styled.div<{showBackground:boolean}>`
+export const SongListComponent = styled.div<{ showBackground: boolean }>`
   border-radius: 10px;
   opacity: 0.98;
   // 背景改为自配置参数控制
@@ -17,7 +17,9 @@ export const SongListComponent = styled.div<{showBackground:boolean}>`
     justify-content: space-between;
     border-bottom: 1px solid ${commonStyle["border-color"]};
     .play_all {
-      display: inline-block;
+      /* display: inline-block; */
+      display: flex;
+      align-items: center;
       line-height: 24px;
       color: ${commonStyle["font-color-desc"]};
       .iconfont {
