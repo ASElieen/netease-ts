@@ -2,6 +2,8 @@ import React, { useState,useCallback } from "react";
 import {useNavigate} from 'react-router-dom'
 import { CSSTransition } from "react-transition-group";
 import AlbumHeader from "../../components/AlbumHeader/AlbumHeader";
+import SongList from "../SongList/SongList";
+import Scroll from "../../components/Scroll/Scroll";
 import {Container,CollectButton,ImgWrapper,SongListWrapper,BgLayer} from './singerInfoStyle'
 import {BiCollection} from 'react-icons/bi'
 import { artist } from "../../api/mock";
@@ -25,7 +27,7 @@ const SingerInfo = () => {
       onExited={() => navigate(-1)}
     >
       <Container play={1}>
-        <AlbumHeader title="头部" handleClick={handleExit}/>
+        <AlbumHeader title="头部" handleClick={handleExit} />
         <ImgWrapper bgUrl={artist.picUrl}>
           <div className="filter"></div>
         </ImgWrapper>
@@ -35,9 +37,13 @@ const SingerInfo = () => {
           <span className="text">收藏</span>
         </CollectButton>
 
-        <BgLayer/>
+        {/* <BgLayer /> */}
 
-        <SongListWrapper></SongListWrapper>
+        <SongListWrapper>
+          <Scroll>
+            <SongList songs={artist.hotSongs} showCollect={false}/>
+          </Scroll>
+        </SongListWrapper>
       </Container>
     </CSSTransition>
   );
