@@ -3,46 +3,47 @@ import { SongItem, SongListComponent } from "./songListStyle";
 import { BsCollection, BsFillPlayFill } from "react-icons/bs";
 import { getName } from "../../api/utils";
 
+type HotSongs = {
+  id: number;
+  name: string;
+  al: al;
+  ar: Array<ar>;
+};
+
 interface ar {
-  id?:number,
-  name:string,
-  alia?:string[]
+  id?: number;
+  name: string;
+  alia?: string[];
 }
 
 interface al {
-  id?:number,
-  name:string,
-  picUrl?:string,
-  alia?:string[]
-}
-
-interface SongsProp {
   id?: number;
   name: string;
-  artists?: Array<{name:string}>;
+  picUrl?: string;
+  alia?: string[];
+}
+
+export interface SongsProp {
+  id?: number;
+  name: string;
+  hotSongs: Array<HotSongs>;
+  artist: { name: string,picUrl:string };
   ar: Array<ar>;
   al: al;
 }
 
-
 interface ParamProps {
   collectCount?: number;
   showCollect: boolean;
-  songs: Array<SongsProp>;
+  songs: Array<HotSongs>;
 }
 
 const SongList = React.forwardRef((props: ParamProps, ref) => {
   const { collectCount, showCollect, songs } = props;
-  const totalCount = songs.length
+  const totalCount = songs.length;
 
-//   const selectItem = (e:Event, index:number) => {
-//     console.log(index);
-//   };
-
-
-
-  const songList = (list: Array<SongsProp>) => {
-    let res:any = [];
+  const songList = (list: Array<HotSongs>) => {
+    let res: any = [];
     list.forEach((item, index: number) => {
       res.push(
         <li key={item.id}>
@@ -50,10 +51,7 @@ const SongList = React.forwardRef((props: ParamProps, ref) => {
           <div className="info">
             <span>{item.name}</span>
             <span>
-              {item.ar
-                ? getName(item.ar)
-                : getName(item.artists as Array<{ name: string }>)}{" "}
-              - {item.al.name}
+              {getName(item.ar)} - {item.al.name}
             </span>
           </div>
         </li>
@@ -62,14 +60,14 @@ const SongList = React.forwardRef((props: ParamProps, ref) => {
     return res;
   };
 
-  const collect = (count:number)=>{
+  const collect = (count: number) => {
     return (
       <div className="add_list">
         <BsCollection className="iconfont" />
         <span> 收藏 ({Math.floor(count / 1000) / 10} 万)</span>
       </div>
     );
-  }
+  };
 
   return (
     <SongListComponent showBackground={true}>

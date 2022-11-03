@@ -1,5 +1,8 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../api/customHooks";
+import { useNavigate, useLocation } from "react-router-dom";
+import { getUrlId } from "../../api/utils";
+import { getSingerInfo } from "../../store/slices/singerInfoSlice";
 import { CSSTransition } from "react-transition-group";
 import AlbumHeader from "../../components/AlbumHeader/AlbumHeader";
 import SongList from "../SongList/SongList";
@@ -12,11 +15,20 @@ import {
   BgLayer,
 } from "./singerInfoStyle";
 import { BiCollection } from "react-icons/bi";
-import { artist } from "../../api/mock";
+import Spinner from "../../components/Loading/Spinner/Spinner";
 
 const SingerInfo = () => {
   const [showStatus, setShowStatus] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  const { singerInfo,isLoading } = useAppSelector((state) => state.singerInfo);
+
+  const id = getUrlId(location.pathname);
+
+  useEffect(() => {
+    dispatch(getSingerInfo(id));
+  }, [dispatch,id]);
 
   //ref部分
   const collectButton = useRef<HTMLDivElement>(null);
@@ -48,7 +60,7 @@ const SingerInfo = () => {
 
     //useImperativeHandle让这里可以调用Scroll中的refresh
     if (songScroll.current) (songScroll.current as any).refresh();
-  }, []);
+  }, [singerInfo,OFFSET]);
 
   //滚动逻辑
   const handleScroll = useCallback((pos: PosType) => {
@@ -62,8 +74,6 @@ const SingerInfo = () => {
 
     // 指的是滑动距离占图片高度的百分比 组件渲染时已经将initialHeight渲染为图片高度
     const percent = Math.abs(newY / height);
-    console.log(newY + "-" + minScrollY);
-    console.log(height);
 
     //下拉
     if (newY > 0) {
@@ -107,43 +117,49 @@ const SingerInfo = () => {
         imageDOM.style.zIndex = "99";
       }
     }
-  },[])
+  }, [OFFSET]);
 
   //开始加载退出动画
   const handleExit = useCallback(() => {
     setShowStatus(false);
   }, []);
 
-  return (
-    <CSSTransition
-      in={showStatus}
-      timeout={300}
-      classNames="fly"
-      appear={true}
-      unmountOnExit
-      onExited={() => navigate(-1)}
-    >
-      <Container play={-1}>
-        <AlbumHeader title="头部" handleClick={handleExit} ref={header} />
-        <ImgWrapper bgUrl={artist.picUrl} ref={imageWrapper}>
-          <div className="filter"></div>
-        </ImgWrapper>
+  if(isLoading){
+    return (
+      <Spinner/>
+    )
+  }else{
+    return (
+      <CSSTransition
+        in={showStatus}
+        timeout={300}
+        classNames="fly"
+        appear={true}
+        unmountOnExit
+        onExited={() => navigate(-1)}
+      >
+        <Container play={-1}>
+          <AlbumHeader title="头部" handleClick={handleExit} ref={header} />
+          <ImgWrapper bgUrl={singerInfo.artist.picUrl} ref={imageWrapper}>
+            <div className="filter"></div>
+          </ImgWrapper>
 
-        <CollectButton ref={collectButton}>
-          <BiCollection className="iconfont" />
-          <span className="text">收藏</span>
-        </CollectButton>
+          <CollectButton ref={collectButton}>
+            <BiCollection className="iconfont" />
+            <span className="text">收藏</span>
+          </CollectButton>
 
-        <BgLayer ref={layer} />
+          <BgLayer ref={layer} />
 
-        <SongListWrapper ref={songScrollWrapper}>
-          <Scroll ref={songScroll} onScroll={handleScroll}>
-            <SongList songs={artist.hotSongs} showCollect={false} />
-          </Scroll>
-        </SongListWrapper>
-      </Container>
-    </CSSTransition>
-  );
+          <SongListWrapper ref={songScrollWrapper}>
+            <Scroll ref={songScroll} onScroll={handleScroll}>
+              <SongList songs={singerInfo.hotSongs} showCollect={false} />
+            </Scroll>
+          </SongListWrapper>
+        </Container>
+      </CSSTransition>
+    );
+  }
 };
 
 export default React.memo(SingerInfo);
