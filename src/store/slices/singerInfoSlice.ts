@@ -1,13 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { SongsProp } from "../../application/SongList/SongList";
-import { axiosInstance } from "../../api/config";
-//import不能导入
-// const { getSingerDetailRequest } = require("../../api/request");
+import {getSingerInfoRequest} from '../../api/request'
 
-//import 这个函数不知道为什么识别不了 只能暂时先写在这
-const getSingerDetailRequest = (id: string) => {
-  return axiosInstance.get(`/artists?id=${id}`);
-};
 
 interface ParamsProps {
   singerInfo: SongsProp;
@@ -30,7 +24,7 @@ export const getSingerInfo = createAsyncThunk(
   "info/getSingerInfo",
   async (id: string) => {
     try {
-      const resp = await getSingerDetailRequest(id);
+      const resp = await getSingerInfoRequest(id);
       return (resp as any);
     } catch (error) {
       console.log(error + "请求歌手信息失败");
