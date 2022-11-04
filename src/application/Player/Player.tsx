@@ -9,6 +9,7 @@ import {
   changeShowPlayList,
 } from "../../store/slices/playerSlice";
 import MiniPlayer from './MiniPlayer/MiniPlayer';
+import NormalPlayer from './NormalPlayer/NormalPlayer';
 
 const Player = () => {
     const currentSong = {
@@ -21,7 +22,8 @@ const Player = () => {
     };
   return (
     <div>
-        <MiniPlayer song={currentSong}/>
+        {/* <MiniPlayer song={currentSong}/> */}
+        <NormalPlayer song={currentSong}/>
     </div>
   )
 }

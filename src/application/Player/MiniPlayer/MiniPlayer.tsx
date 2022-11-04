@@ -10,7 +10,7 @@ interface SongProps {
     al:{picUrl:string}
 }
 
-interface ParamProps {
+export interface ParamProps {
     song:SongProps
 }
 
