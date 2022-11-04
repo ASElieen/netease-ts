@@ -1,4 +1,5 @@
 import React from 'react'
+import Player from '../Player/Player';
 import {Outlet,NavLink} from 'react-router-dom'
 import {Top,Tab,TabItem} from './homeStyle'
 import { AiOutlineSearch, AiOutlineMenu } from "react-icons/ai";
@@ -44,6 +45,7 @@ const Home = () => {
         </NavLink>
       </Tab>
       <Outlet />
+      <Player/>
     </>
   );
 }
