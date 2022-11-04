@@ -12,14 +12,36 @@ const rotate = keyframes`
 
 //外层总容器
 export const NormalPlayerContainer = styled.div`
-position: fixed;
-left: 0;
-right: 0;
-top: 0;
-bottom: 0;
-z-index: 150;
-background: ${commonStyle['background-color']};
-.background{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 150;
+  &.normal-enter,
+  &.normal-exit-done {
+    .top {
+      transform: translate3d(0, -100px, 0);
+    }
+    .bottom {
+      transform: translate3d(0, 100px, 0);
+    }
+  }
+  &.normal-enter-active,
+  &.normal-exit-active {
+    .top,
+    .bottom {
+      transform: translate3d(0, 0, 0);
+      transition: all 0.4s cubic-bezier(0.86, 0.18, 0.82, 1.32);
+    }
+    opacity: 1;
+    transition: all 0.4s;
+  }
+  &.normal-exit-active {
+    opacity: 0;
+  }
+  background: ${commonStyle["background-color"]};
+  .background {
     position: absolute;
     left: 0;
     top: 0;
@@ -28,13 +50,13 @@ background: ${commonStyle['background-color']};
     z-index: -1;
     opacity: 0.6;
     filter: blur(20px);
-    &.layer{
-        background: ${commonStyle['font-color-desc']};
-        opacity: 0.3;
-        filter: none;
+    &.layer {
+      background: ${commonStyle["font-color-desc"]};
+      opacity: 0.3;
+      filter: none;
     }
-}
-`
+  }
+`;
 
 export const Top = styled.div`
   position: relative;
