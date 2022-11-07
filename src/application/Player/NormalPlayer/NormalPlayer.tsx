@@ -29,11 +29,11 @@ const NormalPlayer: React.FC<ParamProps> = (props) => {
 
   //计算偏移量
   const getPosAndScale = () => {
-    const targetWidth = 40;
-    const paddingLeft = 40;
-    const paddingBottom = 30;
-    const paddingTop = 80;
-    const width = window.innerWidth * 0.8;
+    const targetWidth = 40;//小CD总宽
+    const paddingLeft = 40;//小CD的paddingleft20+小CD半径20 小CDx坐标
+    const paddingBottom = 30;//小CD在底部mini中居中 所以取mini的1/2高度就是小圆心y坐标
+    const paddingTop = 80;//顶部到大CD圆心的上半区高度
+    const width = window.innerWidth * 0.8;//窗口文文档显示区总宽*80% 也就是大CD的总宽
     const scale = targetWidth / width;
 
     //normalCD的圆心和miniCD的圆心横纵坐标距离

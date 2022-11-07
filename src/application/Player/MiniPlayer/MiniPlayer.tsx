@@ -6,6 +6,8 @@ import { AiOutlinePause } from "react-icons/ai";
 import { BsFillPlayFill, BsMusicNoteList } from "react-icons/bs";
 import { getName } from "../../../api/utils";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import CircleProgress from "src/BaseUI/CircleProgress/CircleProgress";
+
 
 interface SongProps {
   name: any;
@@ -30,6 +32,10 @@ const MiniPlayer: React.FC<ParamProps> = (props) => {
   const { song, changeFullScreen, fullScreen } = props;
   const dispatch = useAppDispatch()
   const miniPlayerRef = useRef<HTMLDivElement>(null);
+
+  //mock播放进度
+  const percent = 0.2
+
   return (
     <CSSTransition
       in={!fullScreen}
@@ -42,7 +48,10 @@ const MiniPlayer: React.FC<ParamProps> = (props) => {
         if (miniPlayerRef.current) miniPlayerRef.current.style.display = "none";
       }}
     >
-      <MiniPlayerContainer ref={miniPlayerRef} onClick={()=>dispatch(changeFullScreen(true))}>
+      <MiniPlayerContainer
+        ref={miniPlayerRef}
+        onClick={() => dispatch(changeFullScreen(true))}
+      >
         <div className="icon">
           <div className="imgWrapper">
             <img
@@ -61,10 +70,12 @@ const MiniPlayer: React.FC<ParamProps> = (props) => {
         </div>
 
         <div className="control">
-          <AiOutlinePause className="iconfont iconfont-mini" />
+          <CircleProgress radius={32} percent={percent}>
+            <AiOutlinePause className="iconfont icon-mini" />
+          </CircleProgress>
         </div>
         <div className="control">
-          <BsMusicNoteList className="iconfont iconfont-mini" />
+          <BsMusicNoteList className="iconfont" />
         </div>
       </MiniPlayerContainer>
     </CSSTransition>
