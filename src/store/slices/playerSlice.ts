@@ -1,4 +1,4 @@
-import {createAsyncThunk,createSlice} from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit'
 import {playMode} from '../../api/config'
 
 interface ParamProps {
@@ -9,7 +9,8 @@ interface ParamProps {
     mode:number,
     currentIndex:number,
     showPlayList:boolean,
-    currentSong:{}
+    currentSong:{},
+    percent:number
 }
 
 const initialState: ParamProps = {
@@ -21,6 +22,7 @@ const initialState: ParamProps = {
   currentIndex: -1, // 当前歌曲在播放列表的索引位置
   showPlayList: false, // 是否展示播放列表
   currentSong: {},
+  percent:0
 };
 
 const playerSlice = createSlice({

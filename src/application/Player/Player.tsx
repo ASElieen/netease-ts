@@ -8,12 +8,21 @@ import {
   changeMode,
   changeShowPlayList,
 } from "../../store/slices/playerSlice";
-import { useAppSelector } from "src/api/customHooks";
+import { useAppSelector,useAppDispatch } from "src/api/customHooks";
 import MiniPlayer from "./MiniPlayer/MiniPlayer";
 import NormalPlayer from "./NormalPlayer/NormalPlayer";
+import { useDispatch } from "react-redux";
 
 const Player = () => {
-  const { fullScreen } = useAppSelector((state) => state.player);
+  const dispatch = useDispatch()
+  const { fullScreen,playing,percent } = useAppSelector((state) => state.player);
+
+  //控制是否播放
+  const clickToControlPlaying = (e:any,state:boolean)=>{
+    //阻止事件传播
+    e.stopPropagation();
+    dispatch(togglePlayingState(state))
+  }
 
   const currentSong = {
     al: {
@@ -29,8 +38,18 @@ const Player = () => {
         song={currentSong}
         fullScreen={fullScreen}
         changeFullScreen={changeFullScreen}
+        playing={playing}
+        percent={percent}
+        clickToControlPlaying={clickToControlPlaying}
       />
-      <NormalPlayer song={currentSong} fullScreen={fullScreen} changeFullScreen={changeFullScreen}/>
+      <NormalPlayer
+        song={currentSong}
+        fullScreen={fullScreen}
+        changeFullScreen={changeFullScreen}
+        playing={playing}
+        percent={percent}
+        clickToControlPlaying={clickToControlPlaying}
+      />
     </div>
   );
 };

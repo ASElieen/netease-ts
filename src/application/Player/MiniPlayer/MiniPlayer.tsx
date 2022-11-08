@@ -19,7 +19,9 @@ export interface ParamProps {
   song: SongProps;
   fullScreen: boolean;
   changeFullScreen: ActionCreatorWithPayload<any, string>;
-  // playing: boolean;
+  playing: boolean;
+  clickToControlPlaying: (e:any,state:boolean)=>void;
+  percent: number;
   // sequencePlayList: string[];
   // playList: string[];
   // mode: number;
@@ -29,12 +31,12 @@ export interface ParamProps {
 }
 
 const MiniPlayer: React.FC<ParamProps> = (props) => {
-  const { song, changeFullScreen, fullScreen } = props;
+  const { song, changeFullScreen, fullScreen,playing,percent,clickToControlPlaying } = props;
   const dispatch = useAppDispatch()
   const miniPlayerRef = useRef<HTMLDivElement>(null);
 
   //mock播放进度
-  const percent = 0.2
+  // const percent = 0.2
 
   return (
     <CSSTransition
@@ -55,7 +57,7 @@ const MiniPlayer: React.FC<ParamProps> = (props) => {
         <div className="icon">
           <div className="imgWrapper">
             <img
-              className="play"
+              className={`play ${playing ? "" : "pause"}`}
               src={song.al.picUrl}
               width="40"
               height="40"
@@ -71,7 +73,17 @@ const MiniPlayer: React.FC<ParamProps> = (props) => {
 
         <div className="control">
           <CircleProgress radius={32} percent={percent}>
-            <AiOutlinePause className="iconfont icon-mini" />
+            {playing ? (
+              <AiOutlinePause
+                className="iconfont icon-mini"
+                onClick={(e) => clickToControlPlaying(e, false)}
+              />
+            ) : (
+              <BsFillPlayFill
+                className="iconfont icon-mini"
+                onClick={(e) => clickToControlPlaying(e, true)}
+              />
+            )}
           </CircleProgress>
         </div>
         <div className="control">
