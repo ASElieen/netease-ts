@@ -7,6 +7,7 @@ import {
   Bottom,
   Operators,
   CDWrapper,
+  ProgressWrapper,
 } from "./normalStyle";
 import { CSSTransition } from "react-transition-group";
 import animations from "create-keyframe-animation";
@@ -19,6 +20,7 @@ import { AiOutlinePauseCircle } from "react-icons/ai";
 import { BsMusicNoteList, BsFillPlayFill } from "react-icons/bs";
 import { ParamProps } from "../MiniPlayer/MiniPlayer";
 import { getName, prefixStyle } from "src/api/utils";
+import NormalProgress from "src/BaseUI/NormalProgress/NormalProgress";
 
 const NormalPlayer: React.FC<ParamProps> = (props) => {
   const { song, changeFullScreen, fullScreen } = props;
@@ -149,6 +151,15 @@ const NormalPlayer: React.FC<ParamProps> = (props) => {
         </Middle>
 
         <Bottom className="bottom">
+          
+          <ProgressWrapper>
+            <span className="time time-l">0:00</span>
+            <div className="progress-bar-wrapper">
+              <NormalProgress percent={0.2}></NormalProgress>
+            </div>
+            <div className="time time-r">4:17</div>
+          </ProgressWrapper>
+
           <Operators>
             <div className="icon i-left">
               <BiRefresh className="iconfont" />
