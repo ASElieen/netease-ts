@@ -151,11 +151,11 @@ const NormalPlayer: React.FC<ParamProps> = (props) => {
         </Middle>
 
         <Bottom className="bottom">
-          
+
           <ProgressWrapper>
             <span className="time time-l">0:00</span>
             <div className="progress-bar-wrapper">
-              <NormalProgress percent={0.2}></NormalProgress>
+              <NormalProgress percent={0.2} percentChange={()=>{}}></NormalProgress>
             </div>
             <div className="time time-r">4:17</div>
           </ProgressWrapper>

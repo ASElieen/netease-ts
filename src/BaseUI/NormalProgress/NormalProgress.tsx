@@ -3,10 +3,11 @@ import { ProgressWrapper } from "./normalStyle";
 
 interface NormalPlayerProps {
   percent: number;
+  percentChange:(currentPercent:number)=>void
 }
 
 const NormalProgress: React.FC<NormalPlayerProps> = (props) => {
-  const { percent } = props;
+  const { percent,percentChange } = props;
 
   const progressBarRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
@@ -21,6 +22,13 @@ const NormalProgress: React.FC<NormalPlayerProps> = (props) => {
     (
       progressBtnRef.current as HTMLDivElement
     ).style.transform = `translate3d(${offsetWidth}px,0,0)`;
+  }
+
+  //处理父组件传来的数据
+  const changePercent = ()=>{
+    const barWidth = (progressBarRef.current as HTMLDivElement).clientWidth - progressBtnWidth
+    const currentPercent = (progressRef.current as HTMLDivElement).clientWidth/barWidth
+    percentChange(currentPercent) //把新进度传给回调函数
   }
 
   const progressTouchStart = (e: React.TouchEvent) => {
@@ -48,6 +56,7 @@ const NormalProgress: React.FC<NormalPlayerProps> = (props) => {
     const endTouch = JSON.parse(JSON.stringify(touch))
     endTouch.initiated = false
     setTouch(endTouch)
+    changePercent()
   }
 
   const progressClick = (e:any)=>{
@@ -57,6 +66,7 @@ const NormalProgress: React.FC<NormalPlayerProps> = (props) => {
     ).getBoundingClientRect();
     const offsetWidth = e.pageX - rect.left;
     handleOffset(offsetWidth);
+    changePercent()
   }
 
   return (
