@@ -1,16 +1,16 @@
-import {createSlice} from '@reduxjs/toolkit'
-import {playMode} from '../../api/config'
+import { createSlice } from "@reduxjs/toolkit";
+import { SongProps } from "src/application/Player/MiniPlayer/MiniPlayer";
+import { playMode } from "../../api/config";
 
 interface ParamProps {
-    fullScreen:boolean,
-    playing:boolean,
-    sequencePlayList:string[],
-    playList:string[],
-    mode:number,
-    currentIndex:number,
-    showPlayList:boolean,
-    currentSong:{},
-    percent:number
+  fullScreen: boolean;
+  playing: boolean;
+  sequencePlayList: string[];
+  playList: string[];
+  mode: number;
+  currentIndex: number;
+  showPlayList: boolean;
+  currentSong: any;
 }
 
 const initialState: ParamProps = {
@@ -22,7 +22,6 @@ const initialState: ParamProps = {
   currentIndex: -1, // 当前歌曲在播放列表的索引位置
   showPlayList: false, // 是否展示播放列表
   currentSong: {},
-  percent:0
 };
 
 const playerSlice = createSlice({
@@ -69,4 +68,4 @@ export const {
   changeShowPlayList,
 } = playerSlice.actions;
 
-export default playerSlice.reducer
+export default playerSlice.reducer;

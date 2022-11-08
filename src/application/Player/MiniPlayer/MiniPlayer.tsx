@@ -9,7 +9,7 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import CircleProgress from "src/BaseUI/CircleProgress/CircleProgress";
 
 
-interface SongProps {
+export interface SongProps {
   name: any;
   ar: any;
   al: { picUrl: string };
@@ -35,8 +35,7 @@ const MiniPlayer: React.FC<ParamProps> = (props) => {
   const dispatch = useAppDispatch()
   const miniPlayerRef = useRef<HTMLDivElement>(null);
 
-  //mock播放进度
-  // const percent = 0.2
+  
 
   return (
     <CSSTransition
