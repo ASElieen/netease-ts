@@ -51,6 +51,14 @@ const Player = () => {
     setDuration((current.dt/1000 | 0)) //时长
   },[])
 
+  //mini播放器的播放和暂停
+  useEffect(()=>{
+    playing
+      ? (audioRef.current as HTMLAudioElement).play()
+      : (audioRef.current as HTMLAudioElement).pause()
+  },[playing])
+  
+
   // const currentSong = {
     // al: {
     //   picUrl:

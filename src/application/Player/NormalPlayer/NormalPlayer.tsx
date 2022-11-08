@@ -23,7 +23,7 @@ import { getName, prefixStyle } from "src/api/utils";
 import NormalProgress from "src/BaseUI/NormalProgress/NormalProgress";
 
 const NormalPlayer: React.FC<ParamProps> = (props) => {
-  const { song, changeFullScreen, fullScreen } = props;
+  const { song, changeFullScreen, fullScreen,clickToControlPlaying,playing } = props;
   const dispatch = useAppDispatch();
   const normalPlayerRef = useRef<HTMLDivElement>(null);
   const cdWrapperRef = useRef(null);
@@ -142,7 +142,7 @@ const NormalPlayer: React.FC<ParamProps> = (props) => {
           <CDWrapper>
             <div className="cd">
               <img
-                className="image play"
+                className={`image play ${playing ? "" : "pause"}`}
                 src={song.al.picUrl + "?param=400x400"}
                 alt=""
               />
@@ -151,11 +151,13 @@ const NormalPlayer: React.FC<ParamProps> = (props) => {
         </Middle>
 
         <Bottom className="bottom">
-
           <ProgressWrapper>
             <span className="time time-l">0:00</span>
             <div className="progress-bar-wrapper">
-              <NormalProgress percent={0.2} percentChange={()=>{}}></NormalProgress>
+              <NormalProgress
+                percent={0.2}
+                percentChange={() => {}}
+              ></NormalProgress>
             </div>
             <div className="time time-r">4:17</div>
           </ProgressWrapper>
@@ -170,7 +172,17 @@ const NormalPlayer: React.FC<ParamProps> = (props) => {
             </div>
 
             <div className="icon i-center">
-              <BsFillPlayFill className="iconfont" />
+              {playing ? (
+                <AiOutlinePauseCircle
+                  className="iconfont"
+                  onClick={(e) => clickToControlPlaying(e, !playing)}
+                />
+              ) : (
+                <BsFillPlayFill
+                  className="iconfont"
+                  onClick={(e) => clickToControlPlaying(e, !playing)}
+                />
+              )}
             </div>
 
             <div className="icon i-right">
