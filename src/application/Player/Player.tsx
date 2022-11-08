@@ -57,7 +57,22 @@ const Player = () => {
       ? (audioRef.current as HTMLAudioElement).play()
       : (audioRef.current as HTMLAudioElement).pause()
   },[playing])
-  
+
+  //伴随onTimeUpdate更新currentTime
+  const updateTime = (e:any)=>{
+    setCurrentTime(e.target.currentTime)
+  }
+
+  //控制条状进度条进度
+  const onProgressChange = (curPercent:number)=>{
+    const newTime = curPercent * duration
+    setCurrentTime(newTime);
+    (audioRef.current as HTMLAudioElement).currentTime = newTime
+    if(!playing){
+      dispatch(togglePlayingState(true))
+    }
+  }
+
 
   // const currentSong = {
     // al: {
@@ -88,9 +103,12 @@ const Player = () => {
           playing={playing}
           percent={percent}
           clickToControlPlaying={clickToControlPlaying}
+          duration={duration}
+          currentTime={currentTime}
+          onProgressChange={onProgressChange}
         />
       )}
-      <audio ref={audioRef}></audio>
+      <audio ref={audioRef} onTimeUpdate={updateTime}></audio>
     </div>
   );
 };

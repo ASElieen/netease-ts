@@ -19,11 +19,27 @@ import { IoMdArrowBack } from "react-icons/io";
 import { AiOutlinePauseCircle } from "react-icons/ai";
 import { BsMusicNoteList, BsFillPlayFill } from "react-icons/bs";
 import { ParamProps } from "../MiniPlayer/MiniPlayer";
-import { getName, prefixStyle } from "src/api/utils";
+import { getName, prefixStyle,formatPlayTime } from "src/api/utils";
 import NormalProgress from "src/BaseUI/NormalProgress/NormalProgress";
 
-const NormalPlayer: React.FC<ParamProps> = (props) => {
-  const { song, changeFullScreen, fullScreen,clickToControlPlaying,playing } = props;
+interface NormalPlayerProps extends ParamProps {
+  duration: number; //总时长
+  currentTime: number; //当前时间
+  onProgressChange:(curPercent:number)=>void;//控制条状进度条
+}
+
+const NormalPlayer: React.FC<NormalPlayerProps> = (props) => {
+  const {
+    song,
+    changeFullScreen,
+    fullScreen,
+    clickToControlPlaying,
+    playing,
+    duration,
+    currentTime,
+    percent,
+    onProgressChange
+  } = props;
   const dispatch = useAppDispatch();
   const normalPlayerRef = useRef<HTMLDivElement>(null);
   const cdWrapperRef = useRef(null);
@@ -31,11 +47,11 @@ const NormalPlayer: React.FC<ParamProps> = (props) => {
 
   //计算偏移量
   const getPosAndScale = () => {
-    const targetWidth = 40;//小CD总宽
-    const paddingLeft = 40;//小CD的paddingleft20+小CD半径20 小CDx坐标
-    const paddingBottom = 30;//小CD在底部mini中居中 所以取mini的1/2高度就是小圆心y坐标
-    const paddingTop = 80;//顶部到大CD圆心的上半区高度
-    const width = window.innerWidth * 0.8;//窗口文文档显示区总宽*80% 也就是大CD的总宽
+    const targetWidth = 40; //小CD总宽
+    const paddingLeft = 40; //小CD的paddingleft20+小CD半径20 小CDx坐标
+    const paddingBottom = 30; //小CD在底部mini中居中 所以取mini的1/2高度就是小圆心y坐标
+    const paddingTop = 80; //顶部到大CD圆心的上半区高度
+    const width = window.innerWidth * 0.8; //窗口文文档显示区总宽*80% 也就是大CD的总宽
     const scale = targetWidth / width;
 
     //normalCD的圆心和miniCD的圆心横纵坐标距离
@@ -95,15 +111,15 @@ const NormalPlayer: React.FC<ParamProps> = (props) => {
     ] = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
   };
 
-  const afterLeave = ()=>{
+  const afterLeave = () => {
     if (!cdWrapperRef.current) return;
     const cdWrapperDom = cdWrapperRef.current;
     (cdWrapperDom as HTMLDivElement).style.transition = "";
     (cdWrapperDom as HTMLDivElement).style[transform as string] = "";
     //现在要把 normalPlayer 这个 DOM 给隐藏掉，CSSTransition只是把动画执行一遍
     // 不置为 none 现在全屏播放器页面还是存在
-    if(normalPlayerRef.current) normalPlayerRef.current.style.display = "none";
-  }
+    if (normalPlayerRef.current) normalPlayerRef.current.style.display = "none";
+  };
 
   return (
     <CSSTransition
@@ -152,14 +168,14 @@ const NormalPlayer: React.FC<ParamProps> = (props) => {
 
         <Bottom className="bottom">
           <ProgressWrapper>
-            <span className="time time-l">0:00</span>
+            <span className="time time-l">{formatPlayTime(currentTime)}</span>
             <div className="progress-bar-wrapper">
               <NormalProgress
-                percent={0.2}
-                percentChange={() => {}}
+                percent={percent}
+                percentChange={onProgressChange}
               ></NormalProgress>
             </div>
-            <div className="time time-r">4:17</div>
+            <div className="time time-r">{formatPlayTime(duration)}</div>
           </ProgressWrapper>
 
           <Operators>
