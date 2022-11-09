@@ -21,6 +21,7 @@ import { BsMusicNoteList, BsFillPlayFill } from "react-icons/bs";
 import { ParamProps } from "../MiniPlayer/MiniPlayer";
 import { getName, prefixStyle,formatPlayTime } from "src/api/utils";
 import NormalProgress from "src/BaseUI/NormalProgress/NormalProgress";
+import {playMode} from '../../../api/config'
 
 interface NormalPlayerProps extends ParamProps {
   duration: number; //总时长
@@ -28,6 +29,8 @@ interface NormalPlayerProps extends ParamProps {
   onProgressChange: (curPercent: number) => void; //控制条状进度条
   handlePrev: () => void;
   handleNext: () => void;
+  mode:number;
+  changePlayMode:()=>void;
 }
 
 const NormalPlayer: React.FC<NormalPlayerProps> = (props) => {
@@ -42,7 +45,9 @@ const NormalPlayer: React.FC<NormalPlayerProps> = (props) => {
     percent,
     onProgressChange,
     handleNext,
-    handlePrev
+    handlePrev,
+    mode,
+    changePlayMode,
   } = props;
   const dispatch = useAppDispatch();
   const normalPlayerRef = useRef<HTMLDivElement>(null);
@@ -125,6 +130,20 @@ const NormalPlayer: React.FC<NormalPlayerProps> = (props) => {
     if (normalPlayerRef.current) normalPlayerRef.current.style.display = "none";
   };
 
+  //根据Playmode切换对应图标
+  //判断playmode
+  const getPlayMode = () => {
+    let content;
+    if (mode === playMode.sequence) {
+      content = <BiRefresh className="iconfont" onClick={changePlayMode} />;
+    } else if (mode === playMode.loop) {
+      content = <MdReplay className="iconfont" onClick={changePlayMode} />;
+    } else {
+      content = <FaRandom className="iconfont" onClick={changePlayMode} />;
+    }
+    return content;
+  };
+
   return (
     <CSSTransition
       classNames="normal"
@@ -183,8 +202,8 @@ const NormalPlayer: React.FC<NormalPlayerProps> = (props) => {
           </ProgressWrapper>
 
           <Operators>
-            <div className="icon i-left">
-              <BiRefresh className="iconfont" />
+            <div className="icon i-left" onClick={changePlayMode}>
+              {getPlayMode()}
             </div>
 
             <div className="icon i-left" onClick={handlePrev}>

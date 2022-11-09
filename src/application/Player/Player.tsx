@@ -9,7 +9,7 @@ import {
   changeShowPlayList,
 } from "../../store/slices/playerSlice";
 import { useAppSelector, useAppDispatch } from "src/api/customHooks";
-import { getSongUrl, isEmptyObject } from "src/api/utils";
+import { findIndex, getSongUrl, isEmptyObject, shuffle } from "src/api/utils";
 import MiniPlayer from "./MiniPlayer/MiniPlayer";
 import NormalPlayer from "./NormalPlayer/NormalPlayer";
 //mock
@@ -17,9 +17,14 @@ import { playList } from "src/api/mock";
 
 const Player = () => {
   const dispatch = useAppDispatch();
-  const { fullScreen, playing, currentIndex, currentSong } = useAppSelector(
-    (state) => state.player
-  );
+  const {
+    fullScreen,
+    playing,
+    currentIndex,
+    currentSong,
+    mode,
+    sequencePlayList,
+  } = useAppSelector((state) => state.player);
 
   //记录当前的歌曲，以便于下次重渲染时比对是否是一首歌
   const [presong, setPresong] = useState({});
@@ -124,14 +129,27 @@ const Player = () => {
     dispatch(changeCurrentIndex(index));
   };
 
-  // const currentSong = {
-  // al: {
-  //   picUrl:
-  //     "https://p1.music.126.net/JL_id1CFwNJpzgrXwemh4Q==/109951164172892390.jpg",
-  // },
-  // name: "木偶人",
-  // ar: [{ name: "薛之谦" }],
-  // };
+  //-----------------------播放模式控制---------------------
+  const changePlayMode = ()=>{
+    let newMode = (mode+1)%3
+    if(newMode === 0){
+      //顺序模式
+      dispatch(changePlayList(sequencePlayList))
+      let index = findIndex(currentSong,sequencePlayList)
+      dispatch(changeCurrentIndex(index))
+    }else if(newMode === 1){
+      //单曲循环
+      dispatch(changePlayList(sequencePlayList))
+    }else if(newMode === 2){
+      //随机播放
+      let newList = shuffle(sequencePlayList)
+      let index = findIndex(currentSong,newList)
+       dispatch(changePlayList(newList));
+       dispatch(changeCurrentIndex(index));
+    }
+    dispatch(changeMode(newMode));
+  }
+
 
   return (
     <div>
@@ -158,6 +176,8 @@ const Player = () => {
           onProgressChange={onProgressChange}
           handleNext={handleNext}
           handlePrev={handlePrev}
+          mode={mode}
+          changePlayMode={changePlayMode}
         />
       )}
       <audio ref={audioRef} onTimeUpdate={updateTime}></audio>
