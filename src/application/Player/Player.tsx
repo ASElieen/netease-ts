@@ -73,6 +73,40 @@ const Player = () => {
     }
   }
 
+  //--------------------------上下曲切换逻辑-------------------------
+  //playList里只有一首歌时单曲循环
+  const handleLoop = ()=>{
+    (audioRef.current as HTMLAudioElement).currentTime = 0
+    dispatch(togglePlayingState(true));
+    (audioRef.current as HTMLAudioElement).play()
+  }
+
+  //前一首
+  const handlePrev = ()=>{
+    //只有一首的话单曲循环
+    if(playList.length === 1){
+      handleLoop()
+      return
+    }
+    let index = currentIndex - 1
+    if(index<0) index = playList.length-1
+    if(!playing) dispatch(togglePlayingState(true));
+    dispatch(changeCurrentIndex(index))
+  }
+
+  //下一首
+  const handleNext = ()=>{
+    //播放列表一首歌时单曲循环
+    if(playList.length === 1){
+      handleLoop()
+      return
+    }
+    let index = currentIndex+1
+    if(index === playList.length) index = 0
+    if(!playing) dispatch(togglePlayingState(true));
+    dispatch(changeCurrentIndex(index)) 
+  }
+
 
   // const currentSong = {
     // al: {
@@ -106,6 +140,8 @@ const Player = () => {
           duration={duration}
           currentTime={currentTime}
           onProgressChange={onProgressChange}
+          handleNext={handleNext}
+          handlePrev={handlePrev}
         />
       )}
       <audio ref={audioRef} onTimeUpdate={updateTime}></audio>

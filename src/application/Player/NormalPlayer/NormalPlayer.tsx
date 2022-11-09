@@ -25,7 +25,9 @@ import NormalProgress from "src/BaseUI/NormalProgress/NormalProgress";
 interface NormalPlayerProps extends ParamProps {
   duration: number; //总时长
   currentTime: number; //当前时间
-  onProgressChange:(curPercent:number)=>void;//控制条状进度条
+  onProgressChange: (curPercent: number) => void; //控制条状进度条
+  handlePrev: () => void;
+  handleNext: () => void;
 }
 
 const NormalPlayer: React.FC<NormalPlayerProps> = (props) => {
@@ -38,7 +40,9 @@ const NormalPlayer: React.FC<NormalPlayerProps> = (props) => {
     duration,
     currentTime,
     percent,
-    onProgressChange
+    onProgressChange,
+    handleNext,
+    handlePrev
   } = props;
   const dispatch = useAppDispatch();
   const normalPlayerRef = useRef<HTMLDivElement>(null);
@@ -183,7 +187,7 @@ const NormalPlayer: React.FC<NormalPlayerProps> = (props) => {
               <BiRefresh className="iconfont" />
             </div>
 
-            <div className="icon i-left">
+            <div className="icon i-left" onClick={handlePrev}>
               <IoPlaySkipBack className="iconfont" />
             </div>
 
@@ -201,7 +205,7 @@ const NormalPlayer: React.FC<NormalPlayerProps> = (props) => {
               )}
             </div>
 
-            <div className="icon i-right">
+            <div className="icon i-right" onClick={handleNext}>
               <IoPlaySkipForward className="iconfont" />
             </div>
 
