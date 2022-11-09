@@ -1,5 +1,7 @@
 import React from "react";
 import { SongItem, SongListComponent } from "./songListStyle";
+import { useAppDispatch } from "src/api/customHooks";
+import {changePlayList,changeCurrentIndex,changeSequencePlaylist} from '../../store/slices/playerSlice'
 import { BsCollection, BsFillPlayFill } from "react-icons/bs";
 import { getName } from "../../api/utils";
 
@@ -41,12 +43,19 @@ interface ParamProps {
 const SongList = React.forwardRef((props: ParamProps, ref) => {
   const { collectCount, showCollect, songs } = props;
   const totalCount = songs.length;
+  const dispatch = useAppDispatch()
+
+  const selectItem = (e:React.MouseEvent,index:number)=>{
+    dispatch(changePlayList(songs));
+    dispatch(changeSequencePlaylist(songs));
+    dispatch(changeCurrentIndex(index));
+  }
 
   const songList = (list: Array<HotSongs>) => {
     let res: any = [];
     list.forEach((item, index: number) => {
       res.push(
-        <li key={item.id}>
+        <li key={item.id} onClick={(e) => selectItem(e, index)}>
           <span className="index">{index + 1}</span>
           <div className="info">
             <span>{item.name}</span>
@@ -72,7 +81,7 @@ const SongList = React.forwardRef((props: ParamProps, ref) => {
   return (
     <SongListComponent showBackground={true}>
       <div className="first_line">
-        <div className="play_all">
+        <div className="play_all" onClick={(e) => selectItem(e, 0)}>
           <BsFillPlayFill className="iconfont" />
           <span>
             {" "}

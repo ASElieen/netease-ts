@@ -13,7 +13,8 @@ import { findIndex, getSongUrl, isEmptyObject, shuffle } from "src/api/utils";
 import MiniPlayer from "./MiniPlayer/MiniPlayer";
 import NormalPlayer from "./NormalPlayer/NormalPlayer";
 //mock
-import { playList } from "src/api/mock";
+// import { playList } from "src/api/mock";
+import { playMode } from "../../api/config";
 
 const Player = () => {
   const dispatch = useAppDispatch();
@@ -24,6 +25,7 @@ const Player = () => {
     currentSong,
     mode,
     sequencePlayList,
+    playList
   } = useAppSelector((state) => state.player);
 
   //记录当前的歌曲，以便于下次重渲染时比对是否是一首歌
@@ -129,6 +131,15 @@ const Player = () => {
     dispatch(changeCurrentIndex(index));
   };
 
+  //播放结束后的处理
+  const handleEnd = ()=>{
+    if(mode === playMode.loop){
+      handleLoop()
+    }else{
+      handleNext()
+    }
+  }
+
   //-----------------------播放模式控制---------------------
   const changePlayMode = ()=>{
     let newMode = (mode+1)%3
@@ -180,7 +191,7 @@ const Player = () => {
           changePlayMode={changePlayMode}
         />
       )}
-      <audio ref={audioRef} onTimeUpdate={updateTime}></audio>
+      <audio ref={audioRef} onTimeUpdate={updateTime} onEnded={handleEnd}></audio>
     </div>
   );
 };

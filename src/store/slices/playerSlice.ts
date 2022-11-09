@@ -6,7 +6,7 @@ interface ParamProps {
   fullScreen: boolean;
   playing: boolean;
   sequencePlayList: string[];
-  playList: string[];
+  playList: any;
   mode: number;
   currentIndex: number;
   showPlayList: boolean;
