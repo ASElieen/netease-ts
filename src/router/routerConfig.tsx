@@ -23,6 +23,7 @@ const Album = SuspenseComponent(
   lazy(() => import("../application/Album/Album"))
 );
 const SingerInfo = SuspenseComponent(lazy(()=>import('../application/SingerInfo/SingerInfo')))
+const Search = SuspenseComponent(lazy(()=>import('../components/Search/Search')))
 
 export const RouterConfig = () => {
   return (
@@ -39,6 +40,7 @@ export const RouterConfig = () => {
         <Route path="/singer" element={<Singer />}>
           <Route path="/singer/:id" element={<SingerInfo/>}/>
         </Route>
+        <Route path="/search" element={<Search/>}/>
       </Route>
       <Route path="/test" element={<Spinner />} />
     </Routes>

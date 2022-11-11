@@ -12,8 +12,6 @@ import { useAppSelector, useAppDispatch } from "src/api/customHooks";
 import { findIndex, getSongUrl, isEmptyObject, shuffle } from "src/api/utils";
 import MiniPlayer from "./MiniPlayer/MiniPlayer";
 import NormalPlayer from "./NormalPlayer/NormalPlayer";
-//mock
-// import { playList } from "src/api/mock";
 import { playMode } from "../../api/config";
 
 const Player = () => {
@@ -64,11 +62,13 @@ const Player = () => {
     setTimeout(() => {
       (audioRef.current as HTMLAudioElement).play();
     });
-
     dispatch(togglePlayingState(true)); //播放状态
     setCurrentTime(0); //从头播放
     setDuration((current.dt / 1000) | 0); //时长
-  }, [currentIndex, dispatch, presong]);
+
+    //歌词部分
+
+  }, [currentIndex, dispatch, presong,playList]);
 
   //mini播放器的播放和暂停
   useEffect(() => {
@@ -77,10 +77,6 @@ const Player = () => {
       : (audioRef.current as HTMLAudioElement).pause();
   }, [playing]);
 
-  //mock的currentIndex
-  useEffect(() => {
-    dispatch(changeCurrentIndex(0));
-  }, [dispatch]);
 
   //伴随onTimeUpdate更新currentTime
   const updateTime = (e: any) => {

@@ -1,10 +1,11 @@
 import React from 'react'
 import Player from '../Player/Player';
-import {Outlet,NavLink} from 'react-router-dom'
+import {Outlet,NavLink,useNavigate} from 'react-router-dom'
 import {Top,Tab,TabItem} from './homeStyle'
 import { AiOutlineSearch, AiOutlineMenu } from "react-icons/ai";
 
 const Home = () => {
+  const navigate = useNavigate()
   return (
     <>
       <Top>
@@ -12,7 +13,7 @@ const Home = () => {
           <AiOutlineMenu />
         </span>
         <span className="title">Web</span>
-        <span className="iconfont">
+        <span className="iconfont" onClick={()=>navigate('/search')}>
           <AiOutlineSearch />
         </span>
       </Top>

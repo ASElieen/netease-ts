@@ -139,7 +139,7 @@ const SingerInfo = () => {
         onExited={() => navigate(-1)}
       >
         <Container play={-1}>
-          <AlbumHeader title="头部" handleClick={handleExit} ref={header} />
+          <AlbumHeader title="返回" handleClick={handleExit} ref={header} />
           <ImgWrapper bgUrl={singerInfo.artist.picUrl} ref={imageWrapper}>
             <div className="filter"></div>
           </ImgWrapper>
