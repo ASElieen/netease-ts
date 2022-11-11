@@ -14,7 +14,7 @@ export const Container = styled.div`
   transform-origin: right bottom;
   &.fly-enter,
   &.fly-appear {
-    transform: translate3d (100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
   }
   &.fly-enter-active,
   &.fly-appear-active {
