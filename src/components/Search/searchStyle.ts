@@ -29,3 +29,30 @@ export const Container = styled.div`
     transform: translate3d(100%, 0, 0);
   }
 `;
+
+export const ShortcutWrapper = styled.div<{show:boolean}>`
+  position: absolute;
+  top: 40px;
+  bottom: 0;
+  width: 100%;
+  display: ${(props) => (props.show ? "" : "none")};
+`;
+
+export const HotKey = styled.div`
+  margin: 0 20px 20px 20px;
+  .title {
+    padding-top: 35px;
+    margin-bottom: 20px;
+    font-size: ${commonStyle["font-size-m"]};
+    color: ${commonStyle["font-color-desc-v2"]};
+  }
+  .item {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 20px 10px 0;
+    border-radius: 6px;
+    background: ${commonStyle["highlight-background-color"]};
+    font-size: ${commonStyle["font-size-m"]};
+    color: ${commonStyle["font-color-desc"]};
+  }
+`;

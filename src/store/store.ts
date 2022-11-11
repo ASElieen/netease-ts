@@ -6,6 +6,7 @@ import rankReducer from './slices/rankSlice'
 import albumReducer from './slices/albumSlice'
 import singerInfoReducer from './slices/singerInfoSlice'
 import playerReducer from './slices/playerSlice'
+import searchReducer from './slices/searchSlice'
 
 const store = configureStore({
     reducer:{
@@ -15,7 +16,8 @@ const store = configureStore({
         rank:rankReducer,
         album:albumReducer,
         singerInfo:singerInfoReducer,
-        player:playerReducer
+        player:playerReducer,
+        search:searchReducer
     }
 })
 

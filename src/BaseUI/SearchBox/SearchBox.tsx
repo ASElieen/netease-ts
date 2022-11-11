@@ -29,7 +29,7 @@ const SearchBox: React.FC<SearchProps> = (props) => {
 
   //缓存方法
   let handleQueryDebounce = useMemo(()=>{
-    return debounce(handleQuery,500)
+    return debounce(handleQuery,1000)
   },[handleQuery])
 
   useEffect(()=>{
